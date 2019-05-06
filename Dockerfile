@@ -7,6 +7,10 @@ RUN apk --no-cache add \
     php7-mbstring \
     php7-mcrypt \
     php7-ldap \
+    php7-session \
+    php7-phar \
+    php7-openssl \
+    openssl \
     nginx \
     supervisor \
     curl \
@@ -42,7 +46,7 @@ RUN echo '>> Downloading Self Service Password version '${SSP_VERSION} && \
   rm temp.tar.gz;
 
 # Replace config with local
-#COPY assets/config.inc.php /var/www/html/conf/config.inc.php
+COPY assets/config.inc.local.php /var/www/html/conf/config.inc.local.php
 
 EXPOSE 80
 
