@@ -8,44 +8,34 @@ Self Service Password is a PHP application that allows users to change their pas
 
 The easiest way is to create your own configuration file and modify it according to your settings. Download the latest version of the `config.inc.php` file from https://github.com/ltb-project/self-service-password/tree/master/conf/config.inc.php.
 
-```
-$ docker run -d \
-         -p 8080:80 \
-         -v config.inc.php:/var/www/html/conf/config.inc.php \
-         --name ltb \
-         engelhardtm/docker-self-service-password:latest
-```
-
-For docker-compose use this snippet:
-```
-  ltb:
-    image: engelhardtm/docker-self-service-password:latest
-    container_name: ltb
-    ports:
-      - 8080:80
-    volumes:
-      - config.inc.php:/var/www/html/conf/config.inc.php
+## Run demo with default config
+```bash
+docker run -d \
+       -p 8080:80 \
+       --name self-service-password \
+       n3tdom/docker-self-service-password:latest
 ```
 
+## Run with local customized config
+```bash
+curl -sSL https://github.com/ltb-project/self-service-password/archive/v1.3.tar.gz -o temp.tar.gz && \
+  mkdir -p /example_ssp && \
+  tar zxf temp.tar.gz --strip 1 -C /example_ssp && \
+  rm temp.tar.gz;
 
-## Modify the image
-
-You can build your own Image with your `config.inc.php` settings:
-
-```
-FROM engelhardtm/docker-self-service-password
-COPY config.inc.php:/var/www/html/conf/config.inc.php
-```
-
-## Building the image yourself
-
-```
-git clone https://github.com/engelhardtm/docker-self-service-password.git
-cd docker-self-service-password
-docker build -t docker-self-service-password .
+docker run -d \
+       -p 8080:80 \
+       --restart=always \
+       --name self-service-password \
+       -v $(pwd)/example_ssp:/var/www/html n3tdom/docker-self-service-password
 ```
 
-Don't forget to edit the configuration file `assets/config.inc.php`
+## Example configuration
+Config example contains settings for:
+- Active Directory as LDAP provider
+- Yandex.ru as email provider
+- Email token as the only way of resetting password
+- Some fixes in russian localization
 
 ## Documentation for LTB Self-Service-Password
 
